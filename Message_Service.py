@@ -77,6 +77,11 @@ def message(Current_User):
             Select_User = input()
             print("Please type in the message to send to ",Select_User)
             input_message=input()
+            
+ def msg_all(msg,current_user):
+    for user in Users_Names:
+        if(current_user != user):
+            dict1[user].append(msg)
         
             
     
