@@ -45,7 +45,7 @@ def message(Current_User):
         print("Messages for ",Current_User,"\n")
         print(dict1[Current_User])
     
-    else:
+    elif opt==2:
         print("Please Select a Role to Send a message")
         roles =["User","Owner","Admin"]
         j=1
