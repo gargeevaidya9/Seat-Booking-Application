@@ -1,6 +1,10 @@
 import math
 import numpy as np
 
+users = {"Gargee":"123", "Akshay":"456", "prof":"789"}
+owners = {"owner1": "abc", "owner2":"xyz", "owner3":"efg"}
+admin = {"admin": "123"}
+
 class owner:
     def __init__(self, service, size, price,messages):
         self.size = size
@@ -59,8 +63,8 @@ class user:
     def __init__(self):
         self.booked_seat = None
     
-    def get_action(self):
-        options=['New Reservation', 'Existing Reservation']
+    def get_action(self, user):
+        options=['New Reservation', 'Existing Reservation', 'Check Inbox']
         print("\nPlease select:")
         for i, option in enumerate(options):
             print(f"{i+1}. {option}")
@@ -78,6 +82,8 @@ class user:
             if choice == 1: u.cancel_booking
             if choice == 2: u.sell_seat
             if choice==3: u.change_booking
+        if(choice == 3):
+            message(user)
 
         
     def book_seat(self, seat):
@@ -95,16 +101,17 @@ class user:
     def send_complaint(self, complaint, admin):
         admin.receive_complaint(complaint)
 
+message_dict ={}
+a = list(users.keys()); b = list(owners.keys()); c = list(admin.keys())
+all_users=a+b+c
 
+for i in all_users:
+    message_dict[i] = []
     
 def authenticate():
-
+    global users, owners, admin
     while True:
         while True:
-            users = {"Gargee":"123", "Akshay":"456", "prof":"789"}
-            owners = {"owner1": "abc", "owner2":"xyz", "owner3":"efg"}
-            admin = {"admin": "123"}
-
             username = str(input("Username: "))
             if username in users or username in owners or username in admin:
                 password = str(input("Password: ")); 
@@ -120,10 +127,62 @@ def authenticate():
                 if admin[username]==password: print(("\nAuthentication Successful, Logging in")); role = "admin"; return role
                 else: print("Incorrect password, try again")
 
-if __name__ == '__main__':
-    owners = {}
-    users={}
+def message(Current_User):
+    msg_service = ['Check Messages','Send a message to user']
+    print("\nPlease Select an option:")
+    j=1
+    for i in msg_service:
+        print(j,": " ,i)
+        j+=1
+    opt=int(input())
+    if opt == 1:
+        print("Messages for ",Current_User,"\n")
+        print(message_dict[Current_User])
+    
+    elif opt==2:
+        print("Please Select a Role to Send a message")
+        roles =["User","Owner","Admin"]
+        j=1
+        for i in roles:
+            print(j,": ",i)
+            j+=1
+        msg_role=int(input())
+        if(msg_role == 1):
+            print("Please Enter the name of the available User ")
+            for name,password in users.items():
+                print(name)
+            Select_User = input()
+            print(Select_User)
+            print("Please type in the message to send to ",Select_User)
+            input_message=input()
+            message_dict[Select_User].append(input_message)
+            print(message_dict)
+        elif(msg_role == 2):
+            print("Please Enter the name of the available Owner ")
+            for name,password in owners.items():
+                print(name)
+            Select_User = input()
+            print("Please type in the message to send to ",Select_User)
+            input_message=input()
+            message_dict[Select_User].append(input_message)
+            print(message_dict)
+        elif(msg_role == 3):
+            print("Please Enter the name of the Admin")
+            for name,password in admin.items():
+                print(name)
+            Select_User = input()
+            print("Please type in the message to send to ",Select_User)
+            input_message=input()
+            message_dict[Select_User].append(input_message)
+            
+        
+            
+def msg_all(msg,current_user):
+    for user in all_users:
+        if(current_user != user):
+            message_dict[user].append(msg)
 
+if __name__ == '__main__':
     while True:
         print("Hello, Welcome to our seat booking application!\n")
         print("Please enter your login credentials")
@@ -171,4 +230,12 @@ if __name__ == '__main__':
 
         if role.split('_')[0] == 'user':
             u = user()
-            u.get_action()
+            while True:
+                u.get_action(role.split('_')[1])
+                ans = str(input("\n If you want to go back, enter b \n otherwise press q to exit"))
+                if ans == 'b':
+                    continue
+                else:
+                    break
+        continue
+
