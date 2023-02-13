@@ -2,21 +2,27 @@ users = {"Gargee":"123", "Akshay":"456", "prof":"789"}
 owners = {"owner1": "abc", "owner2":"xyz", "owner3":"efg"}
 admin = {"admin": "123"}
 
-Users_Names=[]
+all_users=[]
 for name,password in users.items():
-    Users_Names.append(name)
+    all_users.append(name)
 
 for name,password in owners.items():
-    Users_Names.append(name)
+    all_users.append(name)
 
 for name,password in admin.items():
-    Users_Names.append(name)
+    all_users.append(name)
 
-dict1={}
+message_dict={}
 
-for i in range(0,len(Users_Names),1):
-    dict1[Users_Names[i]] = list()
-    
+for i in range(len(all_users)):
+    temp_user_list = all_users.copy() #i=Gargee
+    temp_user_list.pop(i)
+    message_dict[all_users[i]]={}
+    for j in range(len(temp_user_list)): #j=prof
+        message_dict[all_users[i]][temp_user_list[j]]=[]
+
+
+#print(Users_Names)
 
 def authenticate():
     username = str(input("Username: "))
@@ -33,6 +39,8 @@ def authenticate():
     else:
         print("Incorrect password, try again")
         authenticate()     
+
+
 def message(Current_User):
     msg_service = ['Check Messages','Send a message to user']
     print("\nPlease Select an option:")
@@ -43,45 +51,29 @@ def message(Current_User):
     opt=int(input())
     if opt == 1:
         print("Messages for ",Current_User,"\n")
-        print(dict1[Current_User])
-    
-    elif opt==2:
-        print("Please Select a Role to Send a message")
-        roles =["User","Owner","Admin"]
-        j=1
-        for i in roles:
-            print(j,": ",i)
-            j+=1
-        msg_role=int(input())
-        if(msg_role == 1):
-            print("Please Enter the name of the available User ")
-            for name,password in users.items():
-                print(name)
-            Select_User = input()
-            print(Select_User)
-            print("Please type in the message to send to ",Select_User)
-            input_message=input()
-            dict1[Select_User].append(input_message)
-            print(dict1)
-        elif(msg_role == 2):
-            print("Please Enter the name of the available Owner ")
-            for name,password in owners.items():
-                print(name)
-            Select_User = input()
-            print("Please type in the message to send to ",Select_User)
-            input_message=input()
-        elif(msg_role == 3):
-            print("Please Enter the name of the Admin")
-            for name,password in admin.items():
-                print(name)
-            Select_User = input()
-            print("Please type in the message to send to ",Select_User)
-            input_message=input()
+        for i in message_dict[Current_User]:
+            print(i,":") 
+            inner_dict = message_dict[Current_User]
+            #print("inner_dict ",inner_dict)
+            message_list=inner_dict[i]
+            #print("message_list ",message_list)
+            for msg in message_list:
+                print(msg)
+                
+    elif opt == 2:
+        print("Select a User to send Message")
+        for x in range(len(all_users)):
+            if all_users[x] != Current_User:print(all_users[x])
+        req_user = input()
+        print("please type in a message to send to ",req_user)
+        message=input()
+        message_dict[req_user][Current_User].append(message)
+        
             
- def msg_all(msg,current_user):
-    for user in Users_Names:
+def msg_all(msg,current_user):
+    for user in all_users:
         if(current_user != user):
-            dict1[user].append(msg)
+            message_dict[user].append(msg)
         
             
     
@@ -101,5 +93,8 @@ if __name__ == '__main__':
         print(f"{i+1}. {option}")
     selected_option = int(input("\nEnter your choice: "))
     choice = selected_option
+    #print("Type a message to publish")
+    #msg=input()
+    #msg_all(msg,Current_User)
     if(choice == 3):
         message(Current_User)
