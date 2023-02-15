@@ -3,6 +3,7 @@ owners = {"owner1": "abc", "owner2":"xyz", "owner3":"efg"}
 admin = {"admin": "123"}
 
 all_users=[]
+complaints={}
 for name,password in users.items():
     all_users.append(name)
 
@@ -13,6 +14,7 @@ for name,password in admin.items():
     all_users.append(name)
 
 message_dict={}
+complaints={}
 
 for i in range(len(all_users)):
     temp_user_list = all_users.copy() #i=Gargee
@@ -21,7 +23,8 @@ for i in range(len(all_users)):
     for j in range(len(temp_user_list)): #j=prof
         message_dict[all_users[i]][temp_user_list[j]]=[]
 
-
+for i in all_users:
+    complaints[i]=''
 #print(Users_Names)
 
 def authenticate():
@@ -35,7 +38,7 @@ def authenticate():
     elif username in owners:
         if owners[username]==password: print("\nAuthentication Successful, Logging in"); role = "owner_"+username; return role
     elif username in admin: 
-        if admin[username]==password: print(("\nAuthentication Successful, Logging in")); role = "admin"; return role
+        if admin[username]==password: print(("\nAuthentication Successful, Logging in")); role = "admin"+username; return role
     else:
         print("Incorrect password, try again")
         authenticate()     
@@ -73,8 +76,16 @@ def message(Current_User):
 def msg_all(msg,current_user):
     for user in all_users:
         if(current_user != user):
-            message_dict[user].append(msg)
-        
+            message_dict[user][current_user].append(msg)
+            
+def  Complaintbox(user,role):
+    if role == "admin":
+        for key,value in complaints.items():
+            print(key,value)
+    else:
+        complaint=input("Please tell me your concern so I can report it to the developers: \n")
+        complaints[user]=complaint
+            
             
     
 
@@ -84,10 +95,12 @@ if __name__ == '__main__':
     
     role = authenticate()
     Current_User = role.split('_')
+    Current_User_role=Current_User[0]
     Current_User = Current_User[1]
+   
     print(f"Welcome {role.split('_')[1]}!")
     
-    options=['New Reservation', 'Existing Reservation', 'Check Inbox']
+    options=['New Reservation', 'Existing Reservation', 'Check Inbox','Report an issue','Publish a message']
     print("\nPlease select:")
     for i, option in enumerate(options):
         print(f"{i+1}. {option}")
@@ -98,3 +111,8 @@ if __name__ == '__main__':
     #msg_all(msg,Current_User)
     if(choice == 3):
         message(Current_User)
+    if(choice == 4):
+        Complaintbox(Current_User, Current_User_role)
+    if(choice == 5):
+        msg=input("Please type a message to publish to all users   \n")
+        msg_all(msg,Current_User)
