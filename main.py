@@ -1229,17 +1229,3 @@ if __name__ == '__main__':
                         break            
         continue
 
-'''
-solved
-fix complaint box issues
-removed unnecessary print statments
-added messag efeature in owners and optimised code with options
-display only if there is a message
-Integrate Akshay's code 
-expanded admin options
-added error handling in admin part
-change bookning
-modify book_seat, 1. New Reservation > Buy from direct owner or reseller, if reseller modify accounding based on sell_list (resell and point 4)
-sell an confirm and modify
-exchange booking (simple chatting) (exchange agreed, send request for ticket transfer if both parties accept, exchange and modify booking_track)
-'''
