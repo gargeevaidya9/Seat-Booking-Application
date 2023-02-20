@@ -501,7 +501,7 @@ class user:
             if ans=='q':
                 return
             else:
-                print("\nDirectly you to messaging service where you can send a message to the person you wish to exchange your booking with,\nif they agree in chat, you can go to messaging service>confirm exchange service where exchange will be completed once both parties acceptt the deal!\n")
+                print("\nDirecting you to messaging service where you can send a message to the person you wish to exchange your booking with,\nif they agree in chat, you can go to messaging service>confirm exchange service where exchange will be completed once both parties acceptt the deal!\n")
                 message(self.name,booking_track)
                 
         else:
@@ -1128,7 +1128,10 @@ if __name__ == '__main__':
                             
 
                 if selected_opt==2:
-                    print(available_rooms[name])
+                    if name in available_rooms:
+                        print(available_rooms[name])
+                    else:
+                        print("\nNo existing rooms")
                     ans = str(input("\nPress 'b' to go back to main menu or anyother key to quit"))
                     if ans=='b':
                         continue
@@ -1229,3 +1232,4 @@ if __name__ == '__main__':
                         break            
         continue
 
+#add business class of seat in sell list
